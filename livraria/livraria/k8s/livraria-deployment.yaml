@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: livraria
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: livraria
+  template:
+    metadata:
+      labels:
+        app: livraria
+    spec:
+      containers:
+        - name: livraria
+          image: livraria:latest 
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: livraria
+spec:
+  type: NodePort  # Expõe o serviço para acesso externo
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30002  # Porta para acessar o serviço no host
+  selector:
+    app: livraria
